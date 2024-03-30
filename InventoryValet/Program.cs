@@ -116,7 +116,17 @@ app.MapPut("/items/{id}", (InventoryVDbContext db, int id, Item item) =>
 //});
 
 
-
+//View recipes by Category
+app.MapGet("/items/category/{categoryId}", (InventoryVDbContext db, int categoryId) =>
+{
+    var category = db.Category.Find(categoryId);
+    if (category == null)
+    {
+        return Results.NotFound();
+    }
+    var recipes = db.Items.Where(r => r.CategoryId == categoryId).ToList();
+    return Results.Ok(recipes);
+});
 
 
 
