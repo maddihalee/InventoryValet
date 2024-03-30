@@ -53,4 +53,90 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//Get all items
+app.MapGet("/items", (InventoryVDbContext db) =>
+{
+    return db.Items.ToList();
+});
+
+//Get item by ID
+app.MapGet("/item/{id}", (InventoryVDbContext db, int id) =>
+{
+    var item=db.Items.Where(i=>i.Id == id).FirstOrDefault();
+
+    return item;
+});
+
+//Add item
+app.MapPost("/items", (InventoryVDbContext db, Item item) =>
+{
+    db.Items.Add(item);
+    db.SaveChanges();
+    return Results.Created($"/item/{item.Id}", item);
+});
+
+//Delete a item
+app.MapDelete("/items/{id}", (InventoryVDbContext db, int id) =>
+{
+    Item item = db.Items.SingleOrDefault(i => i.Id == id);
+    if (item == null)
+    {
+        return Results.NotFound();
+    }
+    db.Items.Remove(item);
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
+//Update a recipe
+app.MapPut("/items/{id}", (InventoryVDbContext db, int id, Item item) =>
+{
+    Item itemToUpdate = db.Items.SingleOrDefault(item => item.Id == id);
+    if (itemToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    itemToUpdate.Name = item.Name;
+    itemToUpdate.Description = item.Description;
+    itemToUpdate.Price = item.Price;
+    itemToUpdate.Image = item.Image;
+    //itemToUpdate.CategoryId = item.CategoryId;
+    //itemToUpdate.Size = item.Size;
+
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
+//Get item by CategoryId
+//app.MapGet("/itemByCategory/{categoryId}", (InventoryVDbContext db, int cid) =>
+//{
+//    var itemCategory = db.Items.Where(i => i.CategoryId == cid).FirstOrDefault();
+
+//    return itemCategory;
+//});
+
+
+
+
+
+
+
+
 app.Run();
+
+/*[
+  {
+    "id": 1,
+    "name": "T-Shirt",
+    "description": "A plain t-shirt",
+    "price": 25,
+    "image": "abc123"
+  },
+  {
+    "id": 2,
+    "name": "Dress",
+    "description": "red dress",
+    "price": 60,
+    "image": "ABC"
+  }
+]*/
