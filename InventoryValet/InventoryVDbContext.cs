@@ -5,8 +5,9 @@ using Microsoft.EntityFrameworkCore;
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Category> Category { get; set; }
 
-        public InventoryVDbContext(DbContextOptions<InventoryVDbContext> context) : base(context) { }
+    public InventoryVDbContext(DbContextOptions<InventoryVDbContext> context) : base(context) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
         });
         modelBuilder.Entity<Item>().HasData(new Item[]
         {
-            new Item { Id = 1, Name = "T-Shirt", Description = "A plain t-shirt", Image = "abc123", Price = 25 }
+            new Item { Id = 1, Name = "T-Shirt", Description = "A plain t-shirt", Image = "abc123", Price = 25,}
         });
         modelBuilder.Entity<Category>().HasData(new Category[]
         {
