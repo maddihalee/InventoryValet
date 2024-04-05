@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using InventoryValet.Models;
+using System.Reflection.Metadata;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -128,9 +129,40 @@ app.MapGet("/items/category/{categoryId}", (InventoryVDbContext db, int category
     return Results.Ok(items);
 });
 
+// Create User
+app.MapPost("/register", (InventoryVDbContext db, User user) =>
+{
+    db.Users.Add(user);
+    db.SaveChanges();
+    return Results.Created($"/user/user.Id", user);
+});
 
+//Check if a user is in the database
+app.MapGet("/checkuser/{uid}", (InventoryVDbContext db, string uid) =>
+{
+    var user = db.Users.Where(x => x.FirebaseId == uid).ToList();
+    if (uid == null)
+    {
+        return Results.NotFound();
+    }
+    else
+    {
+        return Results.Ok(user);
+    }
+});
 
+// Get All users
+app.MapGet("/user", (InventoryVDbContext db) =>
+{
+    return db.Users.ToList();
+});
 
+//Get users by ID
+app.MapGet("/user/{id}", (InventoryVDbContext db, int id) =>
+{
+    var user = db.Users.Where(u => u.Id == id);
+    return user;
+});
 
 app.Run();
 
