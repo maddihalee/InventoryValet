@@ -61,7 +61,7 @@ app.MapGet("/items", (InventoryVDbContext db) =>
 });
 
 //Get item by ID
-app.MapGet("/item/{id}", (InventoryVDbContext db, int id) =>
+app.MapGet("/items/{id}", (InventoryVDbContext db, int id) =>
 {
     var item=db.Items.Where(i=>i.Id == id).FirstOrDefault();
 
