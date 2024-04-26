@@ -34,8 +34,10 @@ namespace InventoryValet.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
+                    Image = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
-                    Image = table.Column<string>(type: "text", nullable: false)
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    Size = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,8 +71,8 @@ namespace InventoryValet.Migrations
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Description", "Image", "Name", "Price" },
-                values: new object[] { 1, "A plain t-shirt", "abc123", "T-Shirt", 25f });
+                columns: new[] { "Id", "CategoryId", "Description", "Image", "Name", "Price", "Size" },
+                values: new object[] { 1, 1, "A plain t-shirt", "abc123", "T-Shirt", 25f, "L" });
 
             migrationBuilder.InsertData(
                 table: "Users",

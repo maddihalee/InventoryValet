@@ -63,6 +63,9 @@ namespace InventoryValet.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -78,6 +81,10 @@ namespace InventoryValet.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Items");
@@ -86,10 +93,12 @@ namespace InventoryValet.Migrations
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Description = "A plain t-shirt",
                             Image = "abc123",
                             Name = "T-Shirt",
-                            Price = 25f
+                            Price = 25f,
+                            Size = "L"
                         });
                 });
 
