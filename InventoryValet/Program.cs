@@ -117,6 +117,12 @@ app.MapPut("/items/{id}", (InventoryVDbContext db, int id, Item item) =>
 //});
 
 
+//Get all categories
+app.MapGet("/categories", (InventoryVDbContext db) =>
+{
+    return db.Category.ToList();
+});
+
 //View items by Category
 app.MapGet("/items/category/{categoryId}", (InventoryVDbContext db, int categoryId) =>
 {
