@@ -23,7 +23,11 @@ using Microsoft.EntityFrameworkCore;
         });
         modelBuilder.Entity<Category>().HasData(new Category[]
         {
-            new Category { Id = 1, Name = "Men" },
+           // new Category { Id = 1, Name = "Men", Items=new List<Item>() },
+           // new Category { Id = 2, Name = "Women" , Items=new List<Item>()},
+           // new Category { Id = 3, Name = "Kids", Items = new List < Item >()}
+
+            new Category { Id = 1, Name = "Men"},
             new Category { Id = 2, Name = "Women"},
             new Category { Id = 3, Name = "Kids"}
         });

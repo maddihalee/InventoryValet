@@ -63,6 +63,9 @@ namespace InventoryValet.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -78,7 +81,13 @@ namespace InventoryValet.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Items");
 
@@ -86,10 +95,12 @@ namespace InventoryValet.Migrations
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Description = "A plain t-shirt",
                             Image = "abc123",
                             Name = "T-Shirt",
-                            Price = 25f
+                            Price = 25f,
+                            Size = "L"
                         });
                 });
 
@@ -125,6 +136,20 @@ namespace InventoryValet.Migrations
                             FirebaseId = "abc123",
                             Name = "Maddi"
                         });
+                });
+
+            modelBuilder.Entity("InventoryValet.Models.Item", b =>
+                {
+                    b.HasOne("InventoryValet.Models.Category", null)
+                        .WithMany("Items")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InventoryValet.Models.Category", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
