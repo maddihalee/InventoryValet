@@ -27,22 +27,6 @@ namespace InventoryValet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    Image = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -57,6 +41,30 @@ namespace InventoryValet.Migrations
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Image = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    Size = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Category",
                 columns: new[] { "Id", "Name" },
@@ -68,27 +76,32 @@ namespace InventoryValet.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Items",
-                columns: new[] { "Id", "Description", "Image", "Name", "Price" },
-                values: new object[] { 1, "A plain t-shirt", "abc123", "T-Shirt", 25f });
-
-            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "FirebaseId", "Name" },
                 values: new object[] { 1, "maddi@email.com", "abc123", "Maddi" });
+
+            migrationBuilder.InsertData(
+                table: "Items",
+                columns: new[] { "Id", "CategoryId", "Description", "Image", "Name", "Price", "Size" },
+                values: new object[] { 1, 1, "A plain t-shirt", "abc123", "T-Shirt", 25f, "L" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_CategoryId",
+                table: "Items",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Category");
-
-            migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Category");
         }
     }
 }

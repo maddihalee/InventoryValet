@@ -19,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
         });
         modelBuilder.Entity<Item>().HasData(new Item[]
         {
-            new Item { Id = 1, Name = "T-Shirt", Description = "A plain t-shirt", Image = "abc123", Price = 25, CategoryId=1, Size="L"}
+            new Item { Id = 1, Name = "T-Shirt", Description = "A plain t-shirt", Image = "abc123", Price = 25, CategoryId = 1, Size="L"}
         });
         modelBuilder.Entity<Category>().HasData(new Category[]
         {
