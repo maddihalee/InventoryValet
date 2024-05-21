@@ -57,7 +57,7 @@ app.MapControllers();
 //Get all items
 app.MapGet("/items", (InventoryVDbContext db) =>
 {
-    return db.Items.ToList();
+    return db.Items.OrderBy(item => item.Id).Take(10).ToList();
 });
 
 //Get item by ID
