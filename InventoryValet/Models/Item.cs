@@ -1,4 +1,6 @@
-﻿namespace InventoryValet.Models
+﻿using Microsoft.VisualBasic;
+
+namespace InventoryValet.Models
 {
     public class Item
     {

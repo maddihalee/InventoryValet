@@ -1,11 +1,12 @@
-﻿namespace InventoryValet.Models;
+﻿namespace InventoryValet.Data;
+using InventoryValet.Models;
 using Microsoft.EntityFrameworkCore;
 
-    public class InventoryVDbContext : DbContext
-    {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Item> Items { get; set; }
-        public DbSet<Category> Category { get; set; }
+public class InventoryVDbContext : DbContext
+{
+    public DbSet<User> Users { get; set; }
+    public DbSet<Item> Items { get; set; }
+    public DbSet<Category> Category { get; set; }
 
     public InventoryVDbContext(DbContextOptions<InventoryVDbContext> context) : base(context) { }
 

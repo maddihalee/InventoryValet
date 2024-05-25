@@ -2,6 +2,11 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using InventoryValet.Models;
 using System.Reflection.Metadata;
+using InventoryValet.Data;
+using InventoryValet.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using InventoryValet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +24,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddNpgsql<InventoryVDbContext>(builder.Configuration["InventoryVDbConnectionString"]);
 
 // Set the JSON serializer options
-builder.Services.Configure<JsonOptions>(options =>
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
 {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
@@ -55,9 +60,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 //Get all items
-app.MapGet("/items", (InventoryVDbContext db) =>
+app.MapGet("/items", (InventoryVDbContext db, int page, int pageSize) =>
 {
-    return db.Items.OrderBy(item => item.Id).Take(10).ToList();
+    var pagedResult = db.Items.GetPaged(page, pageSize);
+    return Results.Ok(pagedResult);
 });
 
 //Get item by ID
