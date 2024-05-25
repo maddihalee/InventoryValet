@@ -14,6 +14,12 @@ public class InventoryVDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Fluent API configuration for Item-Category relationship
+        modelBuilder.Entity<Item>()
+            .HasOne(i => i.Category)
+            .WithMany(c => c.Items)
+            .HasForeignKey(i => i.CategoryId);
+
         modelBuilder.Entity<User>().HasData(new User[]
         {
             new User { Id = 1, Name = "Maddi", Email = "maddi@email.com", FirebaseId = "abc123" }
